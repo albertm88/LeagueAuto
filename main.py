@@ -1,15 +1,16 @@
+#######################
+# import
+#######################
 import time
-
 import pyperclip
 import win32api
 import win32gui
-
 import PIL.ImageGrab
 import cv2
 import numpy as np
 import pydirectinput
 import pyautogui
-
+#######################
 
 class LeagueAuto:
 
@@ -20,6 +21,10 @@ class LeagueAuto:
         self.s_state = ''
         self.order = ''
 
+########################################
+#       MouseEvent Controller
+# Leftclick, Rightclick and EyePutting
+########################################
     def mouse_in(self, type, x, y):
 
         try:
@@ -44,7 +49,9 @@ class LeagueAuto:
         except:
 
             print("Restart this project with admin mode, failed to use the mouse.")
-
+#######################################
+#   Paste KeyboardEvent
+#######################################
     def paste(self):
 
         pydirectinput.keyDown('ctrl')
@@ -53,10 +60,23 @@ class LeagueAuto:
         pydirectinput.keyUp('v')
         pydirectinput.keyUp('ctrl')
 
+#######################################
+#   TemplateMatch Function
+#   Input template and all screenshot
+#   It then match the picture ,
+#   Type 0 for only detect
+#   Type 1 for Leftclick after detect
+#   Type 2 for Rightclick after detect
+#   Type 3 for Imshow the result after detect
+#   Return 1 for success
+#   Return 0 for failure
+#   when pos[0],pos[1] = 9,9 ,
+#   It shows no matchable img
+#######################################
     def pic(self, template, type):
 
         try:
-
+            # It seems that ImageGrab is slower than screenshot.
             img = pyautogui.screenshot(region=[0, 0, 2240, 1400])
             # img = PIL.ImageGrab.grab(bbox=(0, 0, 2240, 1400)) #(0, 0, 2240, 1400 )
 
@@ -100,7 +120,10 @@ class LeagueAuto:
 
             print("Object does not exist.")
             return 9, 9, 0
-
+###############################################################################
+#   Client MouseEvent to Start a Bot Game with automation
+#   Added some accidental situations, so the code is a bit long.
+###############################################################################
     def client_move(self, type):
         win_client = "League of Legends"
         client = win32gui.FindWindow(None, win_client)
@@ -240,7 +263,10 @@ class LeagueAuto:
         else:
 
             print("No client")
-
+###############################################################################
+#   Loading Detection
+#   
+###############################################################################
     def load(self):
 
         gameName = "League of Legends (TM) Client"
@@ -268,7 +294,10 @@ class LeagueAuto:
         else:
 
             return 0
-
+###############################################################################
+#   Close the Room after winning
+#   
+###############################################################################
     def game_finish(self):
 
         gameName = "League of Legends (TM) Client"
@@ -297,7 +326,9 @@ class LeagueAuto:
             time.sleep(1)
             self.count += 1
             print("Step Over :",self.count)
-
+###############################################################################
+#   Unfinished Detecting and Attacking Core Part
+###############################################################################
     def game_move(self, way):
 
         gameName = "League of Legends (TM) Client"
@@ -372,7 +403,10 @@ class LeagueAuto:
         else:
 
             print("No Game")
-
+###############################################################################
+#   Unfinished Decision Tree for other behaviours in game
+#   s_state is the state of every champion's skills
+###############################################################################
     def minds(self, mouse_need, order, s_state, lvl, x=None, y=None):
 
         if mouse_need == 1:
@@ -491,7 +525,9 @@ class LeagueAuto:
                 self.tm.sleep(0.1)
             else:
                 print("No this order")
-
+###############################################################################
+#   Pure Axis MEthod, I think it's not very nice.
+###############################################################################
     # def frog(self):
     #
     #     global flag
@@ -516,7 +552,9 @@ class LeagueAuto:
     #     time.sleep(4)
     #     print("frog finished")
 
-
+###############################################################################
+#   Unfinished Part
+###############################################################################
 def jungle_clean(obj):
     if obj == 1:
         pass
@@ -533,6 +571,9 @@ def jungle_clean(obj):
 
 gametitle = "League of Legends (TM) Client"
 clienttitle = "League of Legends"
+###############################################################################
+#   Main
+###############################################################################
 if __name__ == '__main__':
 
     main = LeagueAuto
