@@ -16,10 +16,15 @@ class LeagueAuto:
 
     def __init__(self):
 
+        self.lvl = 0
         self.count = 0
         self.in_danger = 0
         self.s_state = ''
         self.order = ''
+        self.q = 0
+        self.w = 0
+        self.e = 0
+        self.r = 0
 
 ########################################
 #       MouseEvent Controller
