@@ -327,7 +327,123 @@ class LeagueAuto:
             self.count += 1
             print("Step Over :",self.count)
 ###############################################################################
+#   Provide skill flags to the minds() function.
+#   State Flags of level and skill 
+###############################################################################
+    def skills(self, order):
+
+        self.__init__(self)
+
+        for lvl in ['IMGS/SKILLS/LVL/L1.PNG',
+                    'IMGS/SKILLS/LVL/L2.PNG',
+                    'IMGS/SKILLS/LVL/L3.PNG',
+                    'IMGS/SKILLS/LVL/L4.PNG',
+                    'IMGS/SKILLS/LVL/L5.PNG',
+                    'IMGS/SKILLS/LVL/L6.PNG']:
+
+            l1 = self.pic(self, lvl, 0)
+            if l1 == 1:
+                    self.lvl == 1
+            l2 = self.pic(self, lvl, 0)
+            if l2 == 1:
+                    self.lvl == 2
+            l3 = self.pic(self, lvl, 0)
+            if l3 == 1:
+                    self.lvl == 3
+            l4 = self.pic(self, lvl, 0)
+            if l4 == 1:
+                    self.lvl == 4
+            l5 = self.pic(self, lvl, 0)
+            if l5 == 1:
+                    self.lvl == 5
+            l6 = self.pic(self, lvl, 0)
+            if l6 == 1:
+                    self.lvl == 6
+
+        for stl in ['IMGS/SKILLS/Q.PNG',
+                    'IMGS/SKILLS/W.PNG',
+                    'IMGS/SKILLS/E.PNG',
+                    'IMGS/SKILLS/R.PNG']:
+
+            q = self.pic(self, stl, 0)
+            if q == 1:
+
+                self.q = 1
+            else:
+
+                self.q = 0
+            w = self.pic(self, stl, 0)
+            if w == 1:
+
+                self.w = 1
+            else:
+
+                self.w = 0
+            e = self.pic(self, stl, 0)
+            if e == 1:
+
+                self.e = 1
+            else:
+
+                self.e = 0
+            r = self.pic(self, stl, 0)
+            if r == 1:
+
+                self.r = 1
+            else:
+
+                self.r = 0
+
+            q = self.pic(self, "/IMGS/SKILLS/Q_N.PNG", 0)
+            if q[2] == 1:
+
+                s_state = 'q_n'
+            w = self.pic(self, "/IMGS/SKILLS/W_N.PNG", 0)
+            if w[2] == 1:
+
+                s_state = 'w_n'
+            e = self.pic(self, "/IMGS/SKILLS/E_N.PNG", 0)
+            if e[2] == 1:
+
+                s_state = 'e_n'
+            r = self.pic(self, "/IMGS/SKILLS/R_N.PNG", 0)
+            if r[2] == 1:
+
+                s_state = 'r_n'
+
+            q_u = self.pic(self, "/IMGS/SKILLS/UGD/q_ugd.PNG", 0)
+            if q_u[2] == 1:
+
+                s_state = 'q_ugd'
+            w_u = self.pic(self, "/IMGS/SKILLS/UGD/w_ugd.PNG", 0)
+            if w_u[2] == 1:
+
+                s_state = 'w_ugd'
+
+            e_u = self.pic(self, "/IMGS/SKILLS/UGD/e_ugd.PNG", 0)
+            if e_u[2] == 1:
+
+                s_state = 'e_ugd'
+
+            if self.lvl >= 7 and self.lvl != 11:
+
+                s_state = random.randrange('q_ugd','w_ugd','e_ugd','r_ugd',1)
+            elif self.lvl == 11:
+
+                s_state = 'r_ugd'
+            else:
+                stt = ['q_ugd', 'w_ugd', 'e_ugd']
+                i = random.randrange(0 ,2 , 1)
+                s_state = stt[i]
+
+
+        # q_u = self.pic(self, 'IMGS/SKILLS/q_ugd.PNG', 0)
+        # if q_u[2] == 1:
+        # return s_state, self.lvl
+        self.minds(self, order, s_state, self.lvl)
+###############################################################################
 #   Unfinished Detecting and Attacking Core Part
+#   Now jungle is developing and unusable.
 ###############################################################################
     def game_move(self, way):
 
@@ -389,142 +505,152 @@ class LeagueAuto:
 
                     self.pic(self, 'IMGS/INGAME/BDWNT.PNG', 2)
 
-            # elif way == 'jungle':
-            #     print("Go wild")
-            #     jung = self.pic(self,'IMGS/INGAME/BTOPT.PNG', 0)
-
-
-
-
-
-
-
+            elif way == 'jungle':
+                print("Go wild")
+                gameName = "League of Legends (TM) Client"
+                game = win32gui.FindWindow(None, gameName)
+                while game:
+                    self.frog(self)
+#                     self.buffB(self)
+#                     self.buffR(self)
+#                     self.stone(self)
+#                     self.bird(self)
+                    game = win32gui.FindWindow(None, gameName)
+                    if not game:
+                        break
+                self.game_finish(self)
 
         else:
 
             print("No Game")
 ###############################################################################
 #   Unfinished Decision Tree for other behaviours in game
+#   Provide auto skills lvl up and the order to skills.
 #   s_state is the state of every champion's skills
 ###############################################################################
-    def minds(self, mouse_need, order, s_state, lvl, x=None, y=None):
+        def minds(self, order, s_state, lvl):
 
-        if mouse_need == 1:
+        if s_state == 'q_n':
 
-            if s_state == 'q_n':
+            if lvl == 1:
+                q = self.pic(self, 'IMGS/SKILLS/Q_N.PNG', 0)
+                if q[2] == 1:
+                    pydirectinput.keyDown('ctrl')
+                    pydirectinput.keyDown('q')
+                    pydirectinput.keyUp('q')
+                    pydirectinput.keyUp('ctrl')
 
-                if lvl == 1:
-                    self.ctrl.mouseDown(x, y, 'left')
-                    self.tm.sleep(0.1)
-                    self.ctrl.mouseUp(x, y, 'left')
-            elif s_state == 'w_n':
+        elif s_state == 'w_n':
 
-                if lvl == 2:
-                    self.ctrl.mouseDown(x, y, 'left')
-                    self.tm.sleep(0.1)
-                    self.ctrl.mouseUp(x, y, 'left')
-            elif s_state == 'e_n':
+            if lvl == 2:
+                w = self.pic(self, 'IMGS/SKILLS/W_N.PNG', 0)
+                if w[2] == 1:
+                    pydirectinput.keyDown('ctrl')
+                    pydirectinput.keyDown('w')
+                    pydirectinput.keyUp('w')
+                    pydirectinput.keyUp('ctrl')
+        elif s_state == 'e_n':
 
-                if lvl == 3:
-                    self.ctrl.mouseDown(x, y, 'left')
-                    self.tm.sleep(0.1)
-                    self.ctrl.mouseUp(x, y, 'left')
-            elif s_state == 'r_n':
+            if lvl == 3:
+                e = self.pic(self, 'IMGS/SKILLS/E_N.PNG', 0)
+                if e[2] == 1:
+                    pydirectinput.keyDown('ctrl')
+                    pydirectinput.keyDown('e')
+                    pydirectinput.keyUp('e')
+                    pydirectinput.keyUp('ctrl')
+        elif s_state == 'r_n':
 
-                if lvl == 6:
-                    self.ctrl.mouseDown(x, y, 'left')
-                    self.tm.sleep(0.1)
-                    self.ctrl.mouseUp(x, y, 'left')
-            elif s_state == 'q_ugd':
+            if lvl == 6:
+                r = self.pic(self, 'IMGS/SKILLS/R_N.PNG', 0)
+                if r[2] == 1:
+                    pydirectinput.keyDown('ctrl')
+                    pydirectinput.keyDown('r')
+                    pydirectinput.keyUp('r')
+                    pydirectinput.keyUp('ctrl')
+        elif s_state == 'q_ugd':
 
-                if lvl == 4:
+            if lvl == 4:
 
-                    self.ctrl.mouseDown(x, y, 'left')
-                    self.tm.sleep(0.1)
-                    self.ctrl.mouseUp(x, y, 'left')
-                else:
+                q_u = self.pic(self, 'IMGS/SKILLS/q_ugd.PNG', 0)
+                if q_u[2] == 1:
+                    pydirectinput.keyDown('ctrl')
+                    pydirectinput.keyDown('q')
+                    pydirectinput.keyUp('q')
+                    pydirectinput.keyUp('ctrl')
 
-                    self.ctrl.mouseDown(x, y, 'left')
-                    self.tm.sleep(0.1)
-                    self.ctrl.mouseUp(x, y, 'left')
-            elif s_state == 'w_ugd':
+        elif s_state == 'w_ugd':
 
-                if lvl == 5:
+            if lvl == 5:
 
-                    self.ctrl.mouseDown(x, y, 'left')
-                    self.tm.sleep(0.1)
-                    self.ctrl.mouseUp(x, y, 'left')
-                else:
+                w_u = self.pic(self, 'IMGS/SKILLS/w_ugd.PNG', 0)
+                if w_u[2] == 1:
+                    pydirectinput.keyDown('ctrl')
+                    pydirectinput.keyDown('w')
+                    pydirectinput.keyUp('w')
+                    pydirectinput.keyUp('ctrl')
+        elif s_state == 'e_ugd':
 
-                    self.ctrl.mouseDown(x, y, 'left')
-                    self.tm.sleep(0.1)
-                    self.ctrl.mouseUp(x, y, 'left')
-            elif s_state == 'e_ugd':
+            if lvl == 7:
 
-                if lvl == 7:
+                e_u = self.pic(self, 'IMGS/SKILLS/e_ugd.PNG', 0)
+                if e_u[2] == 1:
+                    pydirectinput.keyDown('ctrl')
+                    pydirectinput.keyDown('e')
+                    pydirectinput.keyUp('e')
+                    pydirectinput.keyUp('ctrl')
+        elif s_state == 'r_ugd':
 
-                    self.ctrl.mouseDown(x, y, 'left')
-                    self.tm.sleep(0.1)
-                    self.ctrl.mouseUp(x, y, 'left')
-                else:
+            if lvl == 11:
 
-                    self.ctrl.mouseDown(x, y, 'left')
-                    self.tm.sleep(0.1)
-                    self.ctrl.mouseUp(x, y, 'left')
-            elif s_state == 'r_ugd':
+                r_u = self.pic(self, 'IMGS/SKILLS/r_ugd.PNG', 0)
+                if r_u[2] == 1:
+                    pydirectinput.keyDown('ctrl')
+                    pydirectinput.keyDown('r')
+                    pydirectinput.keyUp('r')
+                    pydirectinput.keyUp('ctrl')
 
-                if lvl == 11:
-
-                    self.ctrl.mouseDown(x, y, 'left')
-                    self.tm.sleep(0.1)
-                    self.ctrl.mouseUp(x, y, 'left')
-                else:
-
-                    self.ctrl.mouseDown(x, y, 'left')
-                    self.tm.sleep(0.1)
-                    self.ctrl.mouseUp(x, y, 'left')
-            else:
-
-                print("No this s_state")
-
-            if order == 'q' | s_state == 'q_able':
-
-                self.ctrl.mouseDown(x, y, 'q')
-                self.tm.sleep(0.1)
-                self.ctrl.mouseUp(x, y, 'q')
-            else:
-
-                print("No this order")
-
-
+        if order == 'q':
+            q = self.pic(self, 'IMGS/SKILLS/Q.PNG', 0)
+            if q[2] == 1:
+                pydirectinput.press('q')
         else:
 
-            if order == 'w' | s_state == 'w_able':
+            print("No this order")
 
-                self.ctrl.press('w')
-                self.tm.sleep(0.1)
-            elif order == 'e' | s_state == 'e_able':
+        if order == 'w':
 
-                self.ctrl.press('e')
-                self.tm.sleep(0.1)
-            elif order == 'r' | s_state == 'r_able':
+            w = self.pic(self, 'IMGS/SKILLS/W.PNG', 0)
+            if w[2] == 1:
+                pydirectinput.press('w')
+        elif order == 'e':
 
-                self.ctrl.press('r')
-                self.tm.sleep(0.1)
-            elif order == 'd':
+            e = self.pic(self, 'IMGS/SKILLS/E.PNG', 0)
+            if q[2] == 1:
+                pydirectinput.press('e')
+        elif order == 'r':
 
-                self.ctrl.press('d')
-                self.tm.sleep(0.1)
-            elif order == 'f':
+            r = self.pic(self, 'IMGS/SKILLS/R.PNG', 0)
+            if q[2] == 1:
+                pydirectinput.press('r')
+        elif order == 'd':
 
-                self.ctrl.press('f')
-                self.tm.sleep(0.1)
-            elif order == 'b':
+            d = self.pic(self, 'IMGS/SKILLS/D.PNG', 0)
+            if d[2] == 1:
+                pydirectinput.press('d')
+        elif order == 'f':
 
-                self.ctrl.press('b')
-                self.tm.sleep(0.1)
+            f = self.pic(self, 'IMGS/SKILLS/F.PNG', 0)
+            if f[2] == 1:
+                pydirectinput.press('f')
             else:
-                print("No this order")
+
+                pydirectinput.press('f')
+        elif order == 'b':
+
+            pydirectinput.press('b')
+        else:
+
+            print("No this order")
 ###############################################################################
 #   Pure Axis MEthod, I think it's not very nice.
 ###############################################################################
@@ -552,28 +678,14 @@ class LeagueAuto:
     #     time.sleep(4)
     #     print("frog finished")
 
-###############################################################################
-#   Unfinished Part
-###############################################################################
-def jungle_clean(obj):
-    if obj == 1:
-        pass
-    elif obj == 2:
-        pass
-    elif obj == 3:
-        pass
-    elif obj == 4:
-        pass
-    elif obj == 5:
-        pass
-    elif obj == 6:
-        pass
 
-gametitle = "League of Legends (TM) Client"
-clienttitle = "League of Legends"
 ###############################################################################
 #   Main
 ###############################################################################
+
+gametitle = "League of Legends (TM) Client"
+clienttitle = "League of Legends"
+
 if __name__ == '__main__':
 
     main = LeagueAuto
