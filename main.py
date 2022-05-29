@@ -128,8 +128,9 @@ class LeagueAuto:
 ###############################################################################
 #   Client MouseEvent to Start a Bot Game with automation
 #   Added some accidental situations, so the code is a bit long.
+#   VSBOT, RECONNECT, TRAINING three modes are supported.
 ###############################################################################
-    def client_move(self, type):
+        def client_move(self, type):
         win_client = "League of Legends"
         client = win32gui.FindWindow(None, win_client)
         gameName = "League of Legends (TM) Client"
@@ -137,12 +138,29 @@ class LeagueAuto:
         if client:
 
             print("Client has been found.")
-            a = self.pic(self,'IMGS/CLIENT/PLAY.PNG', 1)
-            if a[2] != 1:
 
-                self.pic(self, 'IMGS/CLIENT/PLAY_ED.PNG', 1)
-            if type == 'train':
+            if type == 'recon':
 
+                re = self.pic(self, 'IMGS/CLIENT/RECON.PNG', 1)
+                if re[2] != 1:
+                    re = self.pic(self, 'IMGS/CLIENT/RECON.PNG', 1)
+                game = win32gui.FindWindow(None, gameName)
+                if not game:
+                    while game == False:
+
+                        print("Waiting for game.")
+                        time.sleep(1)
+                        game = win32gui.FindWindow(None, gameName)
+                self.game_move(self, 'jungle')
+            elif type == 'train':
+
+                a = self.pic(self, 'IMGS/CLIENT/PLAY.PNG', 1)
+                if a[2] != 1:
+
+                    self.pic(self, 'IMGS/CLIENT/PLAY_ED.PNG', 1)
+                a = self.pic(self, 'IMGS/CLIENT/PLAY.PNG', 1)
+                if a[2] != 1:
+                    self.pic(self, 'IMGS/CLIENT/PLAY_ED.PNG', 1)
                 t = self.pic(self, 'IMGS/CLIENT/TRAIN.PNG', 1)
                 if t[2] != 1:
 
@@ -153,6 +171,10 @@ class LeagueAuto:
 
                     self.pic(self, 'IMGS/CLIENT/SEL_TRAIN_ED.PNG', 1)
             else:
+
+                a = self.pic(self, 'IMGS/CLIENT/PLAY.PNG', 1)
+                if a[2] != 1:
+                    self.pic(self, 'IMGS/CLIENT/PLAY_ED.PNG', 1)
                 b = self.pic(self,'IMGS/CLIENT/VSBOT.PNG', 1)
                 if b[2] != 1:
 
@@ -184,6 +206,7 @@ class LeagueAuto:
 
                         start = self.pic(self, 'IMGS/CLIENT/START_ED.PNG', 1)
                         time.sleep(1)
+
             else:
                 e = self.pic(self, 'IMGS/CLIENT/FIND.PNG', 1)
                 if e[2] != 1:
@@ -245,6 +268,9 @@ class LeagueAuto:
 
                     print("Waiting for game.")
                     time.sleep(1)
+                    game = win32gui.FindWindow(None, gameName)
+
+                self.game_move(self, 'jungle')
 
             if type != "train":
 
@@ -255,19 +281,39 @@ class LeagueAuto:
 
                         loads = self.load(self)
                         # time.sleep(0.1)
-                self.game_move(self, 'mid')
+                self.game_move(self, 'jungle')
             else:
 
                 # time.sleep(18)
-                self.game_move(self, 'mid')
+                self.game_move(self, 'jungle')
                 if (game != True):
 
                     time.sleep(15)
-                    self.game_move(self, 'mid')
+                    self.game_move(self, 'jungle')
 
         else:
 
             print("No client")
+############################################
+#   Press B to go home.
+############################################
+    def home_tele(self):
+
+        print("start go home with teleport")
+        pydirectinput.press('b')
+        home = self.pic(self, 'IMGS/INGAME/HOME.PNG', 0)
+        if home[2] != 1:
+
+            for pach in range(1,9):
+                home = self.pic(self, 'IMGS/INGAME/HOME.PNG', 0)
+                time.sleep(1)
+                if home[2] == 1:
+                    print("Got home")
+                    break
+                if pach == 9:
+                    if home[2] != 1:
+                        print("Failed")
+                        self.home_tele(self)
 ###############################################################################
 #   Loading Detection
 #   
